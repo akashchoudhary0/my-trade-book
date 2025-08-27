@@ -107,7 +107,7 @@ export default function InvoicePage() {
           />
         </div>
         <div className="p-3">
-          <p>Invoice No: {invoice.number}</p>
+          <p>Invoice No:  {invoice.number}</p>
           <p>Date: {invoice.date}</p>
         </div>
       </div>
