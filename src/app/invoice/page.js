@@ -54,7 +54,7 @@ export default function InvoicePage() {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto bg-white border shadow">
+    <div className="p-6 max-w-5xl mx-auto bg-white border border-blue-600 shadow">
       {/* Shop Header */}
       <div className="flex justify-between items-center border-b pb-3 mb-4">
         <div>
@@ -63,50 +63,85 @@ export default function InvoicePage() {
           <p>GSTIN: 22AAAAA0000A1Z5</p>
           <p>Phone: +91 9876543210</p>
         </div>
-        <img src="/logo.png" alt="Shop Logo" className="w-24 h-24 object-contain" />
+        <img src="/logo.png" alt="Shop Logo" className="w-30 h-30 object-contain" />
       </div>
 
       {/* Invoice Info */}
-      <div className="grid grid-cols-2 border mb-4">
-        <div className="border-r p-3">
+      <div className="flex justify-between border mb-4">
+        <div className="w-3/4 border-r p-3">
           <h2 className="font-semibold border-b mb-2">Customer Detail</h2>
-          <input
+          <div className="flex justify-center">
+            <label
+                  className="w-1/4 block  text-sm font-medium text-black mb-2" htmlFor="name">
+                  Name :
+            </label>
+            <input
             type="text"
             placeholder="Customer Name"
-            className="w-full border p-1 mb-1"
+            className="w-3/4 border-b p-1 mb-1"
             value={invoice.customer.name}
             onChange={(e) => setInvoice({ ...invoice, customer: { ...invoice.customer, name: e.target.value } })}
-          />
-          <input
+            />
+          </div>
+          
+           <div className="flex justify-center">
+            <label
+                  className="w-1/4 block text-sm font-medium text-black mb-2" htmlFor="name">
+                  Customer Address :
+            </label>
+            <input
             type="text"
             placeholder="Address"
-            className="w-full border p-1 mb-1"
+            className="w-3/4 border-b p-1 mb-1"
             value={invoice.customer.address}
             onChange={(e) => setInvoice({ ...invoice, customer: { ...invoice.customer, address: e.target.value } })}
-          />
-          <input
+            />
+          </div>
+          
+          <div className="flex justify-center">
+            <label
+                  className="w-1/4 block text-sm font-medium text-black mb-2" htmlFor="name">
+                  contact number :
+            </label>
+            <input
             type="text"
             placeholder="Phone"
-            className="w-full border p-1 mb-1"
+            className="w-3/4 border-b p-1 mb-1"
             value={invoice.customer.phone}
             onChange={(e) => setInvoice({ ...invoice, customer: { ...invoice.customer, phone: e.target.value } })}
-          />
-          <input
+            />
+          </div>
+          
+          <div className="flex justify-center">
+            <label
+                  className="w-1/4 block text-sm font-medium text-black mb-2" htmlFor="name">
+                  GSTIN :
+            </label>
+            <input
             type="text"
             placeholder="GSTIN"
-            className="w-full border p-1 mb-1"
+            className="w-3/4 border-b p-1 mb-1"
             value={invoice.customer.gstin}
             onChange={(e) => setInvoice({ ...invoice, customer: { ...invoice.customer, gstin: e.target.value } })}
-          />
-          <input
+            />
+          </div>
+          
+
+          <div className="flex justify-center">
+            <label
+                  className="w-1/4 block text-sm font-medium text-black mb-2" htmlFor="name">
+                  Place of supply 
+            </label>
+            <input
             type="text"
             placeholder="Place of Supply"
-            className="w-full border p-1"
+            className="w-3/4 border-b p-1"
             value={invoice.customer.place}
             onChange={(e) => setInvoice({ ...invoice, customer: { ...invoice.customer, place: e.target.value } })}
-          />
+            />
+          </div>
         </div>
-        <div className="p-3">
+        <div className="w-1/4 p-4 ">
           <p>Invoice No:  {invoice.number}</p>
           <p>Date: {invoice.date}</p>
         </div>
