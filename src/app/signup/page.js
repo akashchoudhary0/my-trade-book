@@ -1,96 +1,276 @@
 "use client";
+
 import { useRouter } from "next/navigation";
-import Navbar from "@/components/navbar/page";
-import Footer from "@/components/footer/page";
+import { useState } from "react";
+import axios from "axios";
 
 export default function Signup() {
   const router = useRouter();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // 👉 Here you’ll later add API call for signup
+  const [formData, setFormData] = useState({
+    ownerName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
 
-    // On success, redirect to account setup page
-    router.push("/account-setup");
+    businessName: "",
+    businessLogo: "",
+    gst: "",
+    phoneNumber: "",
+    shopCategory: "",
+
+    street: "",
+    city: "",
+    district: "",
+    state: "",
+    pincode: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        {
+          ownerName: formData.ownerName,
+          email: formData.email,
+          password: formData.password,
+
+          businessName: formData.businessName,
+          businessLogo: formData.businessLogo,
+          gst: formData.gst,
+          phoneNumber: formData.phoneNumber,
+          shopCategory: formData.shopCategory,
+
+          address: {
+            street: formData.street,
+            city: formData.city,
+            district: formData.district,
+            state: formData.state,
+            pincode: formData.pincode,
+          },
+        }
+      );
+
+      if (res.data.success) {
+        // Save userId in localStorage
+        localStorage.setItem("userId", res.data.userId);
+
+        // Redirect to dashboard
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      alert(error.response?.data?.message || "Registration failed");
+    }
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Navbar */}
-      <Navbar />
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-6">
+      <div className="bg-white shadow-xl rounded-2xl w-full max-w-4xl p-8">
+        <h2 className="text-3xl font-bold text-center text-blue-600 mb-8">
+          Create Your Business Profile
+        </h2>
 
-      {/* Signup Form */}
-      <main className="flex-1 flex items-center justify-center px-4">
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-          <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">
-            Create Your Account
-          </h2>
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Name */}
-            <div>
-              <label className="block text-gray-700 mb-1">Full Name</label>
+        <form onSubmit={handleSubmit} className="space-y-8">
+
+          {/* 🔐 Owner Details */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-gray-700">
+              Owner Details
+            </h3>
+
+            <div className="grid md:grid-cols-2 gap-4">
               <input
                 type="text"
-                placeholder="Enter your name"
-                className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="ownerName"
+                placeholder="Owner Name"
+                value={formData.ownerName}
+                onChange={handleChange}
+                className="input"
                 required
               />
-            </div>
 
-            {/* Email */}
-            <div>
-              <label className="block text-gray-700 mb-1">Email</label>
               <input
                 type="email"
-                placeholder="Enter your email"
-                className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                className="input"
                 required
               />
-            </div>
 
-            {/* Password */}
-            <div>
-              <label className="block text-gray-700 mb-1">Password</label>
               <input
                 type="password"
-                placeholder="Enter password"
-                className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                className="input"
                 required
               />
-            </div>
 
-            {/* Confirm Password */}
-            <div>
-              <label className="block text-gray-700 mb-1">Confirm Password</label>
               <input
                 type="password"
-                placeholder="Confirm password"
-                className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="input"
                 required
               />
             </div>
+          </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition shadow-md"
-            >
-              Sign Up
-            </button>
-          </form>
+          {/* 🏢 Business Details */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-gray-700">
+              Business Details
+            </h3>
 
-          {/* Redirect to login */}
-          <p className="text-center text-gray-600 mt-6">
-            Already have an account?{" "}
-            <a href="/login" className="text-blue-600 hover:underline">
-              Log in
-            </a>
-          </p>
-        </div>
-      </main>
+            <div className="grid md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                name="businessName"
+                placeholder="Business Name"
+                value={formData.businessName}
+                onChange={handleChange}
+                className="input"
+                required
+              />
 
-      {/* Footer */}
-      <Footer />
+              <input
+                type="text"
+                name="phoneNumber"
+                placeholder="Business Phone Number"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                className="input"
+                required
+              />
+
+              <input
+                type="text"
+                name="gst"
+                placeholder="GST Number (Optional)"
+                value={formData.gst}
+                onChange={handleChange}
+                className="input"
+              />
+
+              <input
+                type="text"
+                name="shopCategory"
+                placeholder="Shop Category (e.g. Grocery, Medical)"
+                value={formData.shopCategory}
+                onChange={handleChange}
+                className="input"
+                required
+              />
+
+              <input
+                type="text"
+                name="businessLogo"
+                placeholder="Business Logo URL (Optional)"
+                value={formData.businessLogo}
+                onChange={handleChange}
+                className="input md:col-span-2"
+              />
+            </div>
+          </div>
+
+          {/* 📍 Address */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-gray-700">
+              Business Address
+            </h3>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                name="street"
+                placeholder="Street"
+                value={formData.street}
+                onChange={handleChange}
+                className="input"
+              />
+
+              <input
+                type="text"
+                name="city"
+                placeholder="City"
+                value={formData.city}
+                onChange={handleChange}
+                className="input"
+              />
+
+              <input
+                type="text"
+                name="district"
+                placeholder="District"
+                value={formData.district}
+                onChange={handleChange}
+                className="input"
+              />
+
+              <input
+                type="text"
+                name="state"
+                placeholder="State"
+                value={formData.state}
+                onChange={handleChange}
+                className="input"
+              />
+
+              <input
+                type="text"
+                name="pincode"
+                placeholder="Pincode"
+                value={formData.pincode}
+                onChange={handleChange}
+                className="input md:col-span-2"
+              />
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-3 rounded-xl text-lg hover:bg-blue-700 transition"
+          >
+            Create Business Profile
+          </button>
+
+        </form>
+      </div>
+
+      <style jsx>{`
+        .input {
+          width: 100%;
+          padding: 10px 14px;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          outline: none;
+        }
+
+        .input:focus {
+          border-color: #2563eb;
+          box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+      `}</style>
     </div>
   );
 }

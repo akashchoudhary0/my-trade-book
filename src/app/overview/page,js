@@ -1,0 +1,15 @@
+"use client";
+import Sidebar from "@/components/sidebar/Sidebar";
+
+export default function OverviewPage() {
+  return (
+    <div className="flex">
+      <Sidebar />
+      <main className="flex-1 p-8 bg-gray-50">
+        <h1 className="text-2xl font-bold mb-4">Dashboard Overview</h1>
+        <p>Quick stats and insights about your sales, invoices, and inventory.</p>
+        {/* Later: Add graphs, totals, etc. */}
+      </main>
+    </div>
+  );
+}

@@ -1,0 +1,12 @@
+export default function ProfilePage() {
+  return (
+    <div>
+      <h1 className="text-2xl font-semibold mb-4">Profile</h1>
+      <div className="bg-white p-6 rounded-xl shadow-md">
+        <p className="text-gray-600">Business Name: Urban Threads</p>
+        <p className="text-gray-600">Email: demo@tradebook.com</p>
+        <p className="text-gray-600">Contact: +91 9876543210</p>
+      </div>
+    </div>
+  );
+}
