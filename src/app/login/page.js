@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Navbar from "@/components/navbar/page";
 import Footer from "@/components/footer/page";
+import { Mail, Lock, ArrowRight } from "lucide-react";
 
 export default function Login() {
   const router = useRouter();
@@ -43,13 +44,10 @@ export default function Login() {
       );
 
       if (res.data.success) {
-        // ✅ Save userId (matches backend response)
         localStorage.setItem("userId", res.data.userId);
 
-        // ✅ Redirect to dashboard
         router.push("/dashboard");
       }
-
     } catch (error) {
       alert(error.response?.data?.message || "Login failed");
     } finally {
@@ -58,63 +56,104 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen bg-white text-gray-900">
       <Navbar />
 
-      <div className="flex items-center justify-center min-h-screen bg-gray-50 pt-20">
-        <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-center mb-6">
-            Login to Your Business Account
-          </h2>
+      <main className="flex-1 flex items-center justify-center px-6 py-24 bg-gradient-to-br from-blue-50 via-white to-gray-100">
+        <div className="w-full max-w-md">
+          {/* Card */}
+          <div className="bg-white border border-gray-200 rounded-3xl shadow-xl p-8 md:p-10">
+            
+            {/* Heading */}
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                Welcome Back
+              </h2>
 
-          <form onSubmit={handleLogin} className="space-y-4">
-
-            <div>
-              <label className="block text-sm font-medium">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full border rounded-lg px-4 py-2 mt-1 focus:ring-2 focus:ring-blue-500 outline-none"
-              />
+              <p className="text-gray-600">
+                Login to manage your billing & inventory
+              </p>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium">
-                Password
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                className="w-full border rounded-lg px-4 py-2 mt-1 focus:ring-2 focus:ring-blue-500 outline-none"
-              />
-            </div>
+            {/* Form */}
+            <form onSubmit={handleLogin} className="space-y-5">
+              
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Email Address
+                </label>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 disabled:opacity-50"
-            >
-              {loading ? "Logging in..." : "Login"}
-            </button>
+                <div className="relative">
+                  <Mail className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
 
-          </form>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    placeholder="Enter your email"
+                    className="w-full border border-gray-300 rounded-xl pl-12 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  />
+                </div>
+              </div>
 
-          <p className="text-sm text-gray-500 mt-4 text-center">
-            Don’t have an account?{" "}
-            <a href="/signup" className="text-blue-600">
-              Sign up
-            </a>
-          </p>
+              {/* Password */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Password
+                </label>
+
+                <div className="relative">
+                  <Lock className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                    placeholder="Enter your password"
+                    className="w-full border border-gray-300 rounded-xl pl-12 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  />
+                </div>
+              </div>
+
+              {/* Forgot Password */}
+              <div className="flex justify-end">
+                <a
+                  href="/forgot-password"
+                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  Forgot Password?
+                </a>
+              </div>
+
+              {/* Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 text-white rounded-xl shadow-lg hover:bg-blue-700 transition-all duration-300 font-semibold disabled:opacity-50"
+              >
+                {loading ? "Logging in..." : "Login"}
+                {!loading && <ArrowRight className="w-4 h-4" />}
+              </button>
+            </form>
+
+            {/* Signup */}
+            <p className="text-sm text-gray-600 mt-8 text-center">
+              Don’t have an account?{" "}
+              <a
+                href="/signup"
+                className="text-blue-600 hover:text-blue-700 font-semibold"
+              >
+                Create Account
+              </a>
+            </p>
+          </div>
         </div>
-      </div>
+      </main>
 
       <Footer />
     </div>
